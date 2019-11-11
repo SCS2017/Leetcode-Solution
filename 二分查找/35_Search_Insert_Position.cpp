@@ -25,6 +25,8 @@ using namespace std;
 class Solution {
 public:
     int searchInsert(vector<int>& nums, int target) {
+        if(nums.empty())
+            return 0;
         if(nums.back() < target)
             return nums.size();
         int left = 0, right = nums.size() - 1;

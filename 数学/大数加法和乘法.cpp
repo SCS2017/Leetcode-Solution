@@ -1,6 +1,4 @@
-#include <stdio.h>
-#include <iostream>
-#include <string.h>
+#include <bits/stdc++.h>
 using namespace std;
 const int maxn = 10000 + 10;
 
@@ -31,37 +29,54 @@ string bigIntegerAdd(string s1,string s2){
     return c;
 }
 
-//乘法
-string bigIntegerMul(string s1,string s2){
-    int a[maxn],b[maxn],c[maxn*2 + 5];
-    memset(a,0,sizeof(a));
-    memset(b,0,sizeof(b));
-    memset(c,0,sizeof(c));
-    int len1 = s1.size(),len2 = s2.size();
-    for(int i = 0; i < len1; i++)
-        a[i] = s1[len1-1-i]-'0'; //倒置
-    for(int i = 0; i < len2; i++)
-        b[i] = s2[len2-1-i]-'0';
-    for(int i = 0; i < len1; i++){
-        for(int j = 0; j < len2; j++){
-            c[i+j] += a[i]*b[j];
+string bigIntegerAdd1(string s1,string s2){
+    reverse(s1.begin(),s1.end());
+    reverse(s2.begin(),s2.end());
+    vector<int> v(max(s1.size(), s2.size())+1, 0);
+    for(int i = 0; i < v.size(); i++){
+        int temp = s1[i] - '0' + s2[i] - '0';
+        if(temp >= 10){
+            v[i] = temp%10;
+            v[i+1] += (temp/10);
         }
+        else
+            v[i] = temp;
     }
-    for(int i = 0; i < maxn*2; i++){
-        if(c[i] >= 10){
-            c[i+1] += c[i]/10;
-            c[i] %= 10;
-        }
-    }
-    string ans = "";
+    string res;
     int i;
-    for(i = maxn * 2; i >= 0; i--)
-        if(c[i] != 0)
-            break;
-    for(;i >= 0; i--)
-        ans += c[i] + '0';
-    return ans;
+    for(i = v.size() - 1; i > 0 && v[i] == 0; --i)
+    ;
+    for(; i >= 0; --i){
+        res += (char)(v[i] + '0');
+    }
+    return res;
 }
+
+//乘法
+string bigIntegerMul(string s1, string s2){
+    reverse(s1.begin(),s1.end());
+    reverse(s2.begin(),s2.end());
+    vector<int> v(s1.size() + s2.size(), 0);
+    for(int i = 0; i < s1.size(); ++i){
+        for(int j = 0 ;j < s2.size(); ++j)
+            v[i+j] += (s1[i] - '0') * (s2[j] - '0');
+    }
+    for(int i = 0;i < v.size() - 1; ++i){
+        if(v[i] >= 10){
+            v[i+1] += v[i] /10;
+            v[i] %= 10;
+        }
+    }
+    string res;
+    int i;
+    for(i = v.size() - 1; i > 0 && v[i] == 0; --i)
+    ;
+    for(; i >= 0; --i){
+        res += (char)(v[i] + '0');
+    }
+    return res;
+}
+
 
 int main(){
     //freopen("in.txt","r",stdin);
@@ -77,8 +92,9 @@ int main(){
     string num1, num2;
     while(cin >> num1 >> num2){
         string sums = bigIntegerAdd(num1, num2);
+        string sums1 = bigIntegerAdd(num1, num2);
         string muls = bigIntegerMul(num1, num2);
-        cout << sums << endl;
+        cout << sums << " " << sums1 << endl;
         cout << muls << endl;
     }
     return 0;

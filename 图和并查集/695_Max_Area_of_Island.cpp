@@ -29,35 +29,28 @@ using namespace std;
 //DFS
 class Solution {
 public:
-    int maxSize(vector<vector<int>>& grid , int i , int j){
-        int m = grid.size(), n = grid[0].size();
-        if(i < 0 || i >= m || j < 0 || j >= n)
-            return 0;
-        int tmp = 0;
-        if(grid[i][j] == 1){
-            tmp = 1;
-            grid[i][j] = 0;
-        }
-        else
-            return 0;
-        return tmp + maxSize(grid,i+1,j) + maxSize(grid,i,j+1) + maxSize(grid,i-1,j) + maxSize(grid,i,j-1);
-    }
-    
-    
-    int maxAreaOfIsland(vector<vector<int>>& grid) {
+    int maxAreaOfIsland(vector<vector<int> >& grid) {
         int res = 0;
         for(int i = 0 ; i < grid.size() ; i ++){
             for(int j = 0 ; j < grid[i].size() ; j++){
-                res = max(res, maxSize(grid,i,j));
+                res = max(res, dfs(grid, i, j));
             }
         }
         return res;
+    }
+    int dfs(vector<vector<int> >& board, int i, int j){
+        int m = board.size(), n = board[0].size();
+        if(i < 0 || i >= m || j < 0 || j >= n || board[i][j] != 1)
+            return 0;
+        board[i][j] = 0;
+        return 1 + dfs(board, i+1, j) + dfs(board, i-1, j) + dfs(board, i, j+1) +
+                   dfs(board, i, j-1);
     }
 };
 
 class Solution1 {
 public:
-    int maxAreaOfIsland(vector<vector<int>>& grid) {
+    int maxAreaOfIsland(vector<vector<int> >& grid) {
         if(grid.empty() || grid[0].empty())
             return 0;
         int m = grid.size(), n = grid[0].size();
@@ -74,8 +67,8 @@ public:
         return res;
     }
 private:
-    vector<vector<int>> dirs{{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
-    void dfs(vector<vector<int>>& grid, int i, int j, int& tmp, int& res){
+    vector<vector<int> > dirs{{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
+    void dfs(vector<vector<int> >& grid, int i, int j, int& tmp, int& res){
         int m = grid.size(), n = grid[0].size();
         if(i < 0 || i >= m || j < 0 || j >= n || grid[i][j] != 1)
             return;

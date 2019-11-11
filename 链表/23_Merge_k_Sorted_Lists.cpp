@@ -22,6 +22,8 @@ struct ListNode {
     ListNode(int x) : val(x), next(NULL) {}
 };
 
+// 两两合并，一种思路是前两个合并，合并完了在跟第三个合并，直到第k个，但是这样效率不高。
+// 换一种思路，分治法，就是不停的对半划分，比如合并6个链表，首先合并0和3，1和4，2和5。这样下一次只需合并3个链表
 class Solution {
 public:
     ListNode* mergeTwoLists(ListNode* l1, ListNode* l2){

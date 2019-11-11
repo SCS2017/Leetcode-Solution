@@ -47,12 +47,12 @@ using namespace std;
 
 class Solution {
 public:
-    bool canFinish(int numCourses, vector<pair<int, int>>& prerequisites){
+    bool canFinish(int numCourses, vector<vector<int> >& prerequisites){
         vector<vector<int> > graph(numCourses, vector<int>());
         vector<int> degree(numCourses);
         for(auto m: prerequisites){
-            int from = m.second;
-            int to = m.first;
+            int from = m[1];
+            int to = m[0];
             //from:to 表示to依赖于from
             graph[from].push_back(to);
             //入度
@@ -67,6 +67,7 @@ public:
         while(!que.empty()){
             int tmp = que.front();
             que.pop();
+            cout << tmp << " ";
             for(auto b: graph[tmp]){
                 --degree[b];
                 if(degree[b] == 0)
@@ -81,9 +82,9 @@ public:
 };
 
 int main(){
-    if(0.0001 == 0.0001)
-        cout << 1 << endl;
-    else
-        cout << 0 << endl;
+    vector<vector<int> > prerequisites = {{3, 0}, {1, 0}, {3, 1}, {2, 1}, {2, 3}, {4, 2}, {4, 3}};
+    //  {0, 1, 3, 2, 4}
+    bool res = Solution().canFinish(5, prerequisites);
+    cout << boolalpha << res << endl;
     return 0;
 }

@@ -79,7 +79,7 @@ private:
 另一种方法是层序遍历的非递归解法，这种方法略微复杂一些，我们需要借助queue来做，本质是BFS算法，也不是很难理解，
 就是BFS算法的常规套路稍作修改即可
 */
-class Codec {
+class Codec1 {
 public:
     // Encodes a tree to a single string.
     string serialize(TreeNode* root) {
@@ -126,7 +126,30 @@ public:
     }
 };
 
+TreeNode* reconstructTree(vector<string> vec, int& i){
+    if(vec.empty() || i >= vec.size())
+        return NULL;
+    if(vec[i] == "#")
+        return NULL;
+    TreeNode* root = new TreeNode(stoi(vec[i]));
+    root->left = reconstructTree(vec, ++i);
+    root->right = reconstructTree(vec, ++i);
+    return root;
+}
+
+void preorder(TreeNode* root){
+    if(!root)
+        return;
+    cout << root->val << " ";
+    preorder(root->left);
+    preorder(root->right);
+}
+
 int main(){
-    
+    vector<string> vec = {"1", "2", "4", "#", "#", "#", "3", "#", "#"};
+    int i = 0;
+    TreeNode* root = reconstructTree(vec, i);
+    preorder(root);
+    cout << endl;
     return 0;
 }

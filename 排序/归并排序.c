@@ -37,7 +37,7 @@ void Merge(int A[], int left, int mid, int right)// 合并两个已排好序的�
 
 void MergeSortRecursion(int A[], int left, int right)    // 递归实现的归并排序(自顶向下)
 {
-    if (left == right)    // 当待排序的序列长度为1时，递归开始回溯，进行merge操作
+    if (left >= right)    // 当待排序的序列长度为1时，递归开始回溯，进行merge操作
         return;
     int mid = (left + right) / 2;
     MergeSortRecursion(A, left, mid);

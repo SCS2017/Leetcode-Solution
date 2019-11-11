@@ -58,9 +58,7 @@ public:
         ListNode* result = new ListNode(value % 10);  //对10取余即为该位置上的数
         result->next = addTwoNumbers(l1->next, l2->next);
         if (value >= 10)   //如果两数之和大于10，在下一位置加上对10取整的结果
-        { 
             result->next = addTwoNumbers(new ListNode(value / 10), result->next);
-        }
         return result;
 
     }

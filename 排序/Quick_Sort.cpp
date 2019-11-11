@@ -28,6 +28,8 @@ void QuickSort(vector<int>& nums, int left, int right){
     QuickSort(nums, pivot_index + 1, right);
 }
 
+// 同样去一个数位基准数进行递归分区，两个指针分别从头和尾开始遍历数据，
+// 如果头不大于基准数，尾不小于基准数则不改位置，否则尾数与头交换。
 void QuickSort1(vector<int>& nums, int left, int right){
     if(left >= right)
         return;
@@ -43,12 +45,12 @@ void QuickSort1(vector<int>& nums, int left, int right){
     swap(nums[i], nums[right]);
     //以i的位置为基准,分成两部分，左部分
     QuickSort1(nums, left, i-1);
-    QuickSort1(nums, j+1, right);
+    QuickSort1(nums, i+1, right);
 }
 
 int main()
 {
-    int A[] = {5, 2, 9, 4, 7, 6, 1, 3, 8}; // 从小到大快速排序
+    int A[] = {5, 2, 9, 4, 7, 6, 1, 2, 8}; // 从小到大快速排序
     int n = sizeof(A) / sizeof(int);
     vector<int> nums(A, A + n);
     QuickSort1(nums, 0, n - 1);

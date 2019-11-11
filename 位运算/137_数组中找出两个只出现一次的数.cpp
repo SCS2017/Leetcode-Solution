@@ -50,34 +50,6 @@ vector<int> FindNumsAppearOnce1(vector<int> nums)
     return res;
 }
 
-//异或
-vector<int> FindNumsAppearOnce2(vector<int> &nums)
-{
-    vector<int> res;
-    if (nums.size() < 2)
-        return nums;
-    int myxor = 0;
-    int flag = 1;
-    for (int i = 0; i < nums.size(); ++i)
-        myxor ^= nums[i];
-
-    //利用异或结果的最低位为1的flag将数组中的数字分为两类，一类是与flag按位与为0，另一类为不为0
-    //假如flag=1说明两个数的最低位不同，flag=2次最低位不同，flag=4。。。依次类推
-    while ((myxor & flag) == 0)
-        flag <<= 1;
-    cout << flag << endl;
-    int num1 = myxor;
-    int num2 = myxor;
-    for (int i = 0; i < nums.size(); ++i){
-        if ((flag & nums[i]) == 0) //将数字分为两组进行异或操作
-            num1 ^= nums[i];
-        else
-            num2 ^= nums[i];
-    }
-    res.push_back(num1);
-    res.push_back(num2);
-    return res;
-}
 
 /*
 任何一个数字异或它自己都等于0

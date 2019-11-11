@@ -15,9 +15,9 @@ using namespace std;
 
 /*
 LCS(m ,n)表示S1[0...m]和S2[0...n]的最长公共子序列的长度
-S1[m] == S2[n]:
+S1[m-1] == S2[n-1]:
     LCS(m, n) = 1 + LCS(m - 1, n - 1)
-S1[m] != S2[n]:
+S1[m-1] != S2[n-1]:
     LCS(m, n) = max(LCS(m - 1, n), LCS(m, n - 1))
 */
 class Solution{

@@ -29,8 +29,39 @@ n >= 3
 #include <bits/stdc++.h>
 using namespace std;
 
-// hashset保存数组中的数
+
+// 暴力解法O，有点问题
 class Solution {
+public:
+    int lenLongestFibSubseq(vector<int>& A) {
+        int n = A.size();
+        if(n < 3)
+            return 0;
+        // vector<int> dp(n, 1);
+        int res = 0;
+        for(int i = 0; i < n-2; ++i){
+            for(int j = i+1; j < n-1; ++j){
+                int cnt = 2;
+                for(int k = j+1; k < n; ++k){
+                    int left = i, right = j;
+                    while(A[left] + A[right] == A[k]){
+                        ++cnt;
+                        left = j;
+                        right = k;
+                        ++k;
+                    }
+                }
+                res = max(res, cnt);
+            }
+        }
+        if(res < 3)
+            return 0;
+        return res;
+    }
+};
+
+// hashset空间换时间
+class Solution1 {
 public:
     int lenLongestFibSubseq(vector<int>& A) {
         int n = A.size(), res = 0;

@@ -44,7 +44,7 @@ int KMP(string& s, string& p){
 
 int main(){
     string pattern = "BBC ABCDAB ABCDABCDABDE";
-    string str = "ABCDABD";
+    string str = "ABCAABC";
     int res = KMP(pattern, str);
     cout << res << endl;
     return 0;

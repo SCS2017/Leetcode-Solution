@@ -21,8 +21,8 @@ using namespace std;
 //使用最大优先队列，遍历整个数组，得到最小的k个数，然后返回top元素即可
 class Solution {
 public:
-    int kthSmallest(vector<vector<int>>& matrix, int k) {
-        priority_queue<int, vector<int>> pq;
+    int kthSmallest(vector<vector<int> >& matrix, int k) {
+        priority_queue<int, vector<int> > pq;
         int m = matrix.size();
         for(int i = 0; i < m; ++i){
             for(int j = 0; j < m; ++j){
@@ -65,9 +65,9 @@ k = 3
 循环结束，left 和 right 均为 12，任意返回一个即可。
 整体时间复杂度为 O(nlgn*lgX)，其中X为最大值和最小值的差值
 */
-class Solution {
+class Solution1 {
 public:
-    int kthSmallest(vector<vector<int>>& matrix, int k) {
+    int kthSmallest(vector<vector<int> >& matrix, int k) {
         int left = matrix[0][0], right = matrix.back().back();
         while(left < right){
             int mid = left + (right - left) / 2;
@@ -90,9 +90,9 @@ public:
 
 这里从右上角开始也是一样的，每次查找总能减少一列或者一行
 */
-class Solution {
+class Solution2 {
 public:
-    int kthSmallest(vector<vector<int>>& matrix, int k) {
+    int kthSmallest(vector<vector<int> >& matrix, int k) {
         int left = matrix[0][0], right = matrix.back().back();
         while(left < right){
             int mid = left + (right - left) / 2;
@@ -105,7 +105,7 @@ public:
         return left;
     }
     //统计数组中小于target的个数
-    int help(vector<vector<int>>& matrix, int target){
+    int help(vector<vector<int> >& matrix, int target){
         int m = matrix.size();
         int i = m-1, j = 0, res = 0;
         while(i >= 0 && j < m){
@@ -120,5 +120,53 @@ public:
     }
 };
 
+// 第k大的数 二分还是不对
+// class Solution3 {
+// public:
+//     int kthLargest(vector<vector<int> >& matrix, int k) {
+//         int left = matrix[0][0], right = matrix.back().back();
+//         while(left < right){
+//             int mid = left + (right - left) / 2;
+//             int cnt = help(matrix, mid);
+//             if(cnt < k)
+//                 right = mid;
+//             else
+//                 left = mid + 1;
+//         }
+//         return left;
+//     }
+//     //统计数组中大于target的个数
+//     int help(vector<vector<int> >& matrix, int target){
+//         int m = matrix.size();
+//         int i = m-1, j = 0, res = 0;
+//         while(i >= 0 && j < m){
+//             if(matrix[i][j] >= target){
+//                 res += m - j;
+//                 --i;
+//             }
+//             else
+//                 ++j;
+//         }
+//         return res;
+//     }
+// };
+
+int main(){
+    int n;
+    cin >> n;
+    vector<vector<int> > matrix(n, vector<int>(n));
+    for(int i = 0; i < n; ++i){
+        for(int j = 0; j < n; ++j)
+            cin >> matrix[i][j];
+    }
+    int k;
+    while(cin >> k){
+        // 其实第k大的数，不就是第n+1-k小的数
+        int res1 = Solution2().kthSmallest(matrix, n*n+1-k);
+        // int res2 = Solution3().kthLargest(matrix, k);
+        cout << res1 << endl;
+    }
+    return 0;
+}
 
 

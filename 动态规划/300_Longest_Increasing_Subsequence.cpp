@@ -58,12 +58,49 @@ public:
     }
 };
 
+/* 
+下面来看一种优化时间复杂度到 O(nlgn) 的解法，这里用到了二分查找法。
+思路是，先建立一个数组 ends，把首元素放进去，然后比较之后的元素，如果遍历到的新元素比 ends 数组中的首元素小的话，
+替换首元素为此新元素，如果遍历到的新元素比ends数组中的末尾元素还大的话，将此新元素添加到ends数组末尾(注意不覆盖原末尾元素)。
+如果遍历到的新元素比 ends 数组首元素大，比尾元素小时，此时用二分查找法找到第一个不小于此新元素的位置，覆盖掉位置的原来的数字，
+以此类推直至遍历完整个 nums 数组，此时 ends 数组的长度就是要求的LIS的长度，
+特别注意的是 ends 数组的值可能不是一个真实的 LIS，比如若输入数组 nums 为 {4, 2， 4， 5， 3， 7}，
+那么算完后的 ends 数组为 {2， 3， 5， 7}，可以发现它不是一个原数组的 LIS，只是长度相等而已，千万要注意这点。
+*/
+class Solution1 {
+public:
+    int lengthOfLIS(vector<int>& nums) {
+        if(nums.size() == 0){
+            return 0;
+        }
+        vector<int> dp{nums[0]};
+        for(int i = 1; i < nums.size(); ++i){
+            if(nums[i] < dp[0])
+                dp[0] = nums[i];
+            else if(nums[i] > dp.back())
+                dp.push_back(nums[i]);
+            else{
+                int left = 0, right = dp.size();
+                while(left < right){
+                    int mid = left + (right - left) / 2;
+                    if(dp[mid] < nums[i])
+                        left = mid + 1;
+                    else
+                        right = mid;
+                }
+                dp[right] = nums[i];
+            }
+        }
+        return dp.size();
+    }
+};
+
 int main()
 {
-    int arr[] = {10, 9, 2, 5, 3, 7, 101, 18};
+    int arr[] = {1, 2, 3, 1, 4, 4};
     int len = sizeof(arr) / sizeof(int);
     vector<int> nums(arr, arr + len);
-    int res = Solution().lengthOfLIS(nums);
+    int res = Solution1().lengthOfLIS(nums);
     cout << res << endl;
     return 0;
 }

@@ -102,65 +102,71 @@ public:
     }
 };
 
-ListNode* SortList(ListNode* head)
-{
-    if(head == 0 || head->next == 0)
-    {
+class Solution {
+public:
+    ListNode* sortList(ListNode* head) {
+        quickSortList(head, NULL);
         return head;
     }
-    //两个结点a和b，a每次走一步，b每次走两步，这样b走到最后，a恰好在中点位置
-    ListNode *a = head, *b = head;
-    for(; b->next && b->next->next; b = b->next->next, a = a->next)
-    ;
-    b = SortList(a->next);
-    a->next = 0;
-    a = SortList(head);
-    ListNode *tail = 0;
-    while(a && b)
-    {
-        if(a->val < b->val)
-        {
-            if(tail)
-            {
-                tail = tail->next = a;
+    void quickSortList(ListNode* head, ListNode* tail){
+        if(head == tail || head->next == tail)
+            return;
+        int pivot = head->val;
+        ListNode* left = head, *cur = head->next;
+        while(cur && cur != tail){
+            if(cur->val < pivot){
+                left = left->next;
+                swap(left, cur);
             }
-            else{
-                head = tail = a;
-            }
-            a = a->next;
+            cur = cur->next;
         }
-        else{
-            if(tail)
-            {
-                tail = tail->next = b;
-            }
-            else{
-                head = tail = b;
-            }
-            b = b->next;
-        }
+        swap(head, left);
+        quickSortList(head, left);
+        quickSortList(left->next, tail);
     }
-    if(a)
-    {
-        if(tail)
-        {
-            tail->next = a;
-        }
-        else{
-            head = a;
-        }
-    }
-    else{
-        if(tail)
-        {
-            tail->next = b;
-        }
-        else{
-            head = b;
-        }
-    }
-    return head; 
-}
+};
+
+class Solution {
+public:
+	ListNode* sortList(ListNode* head) {
+		quickSort(head, nullptr);
+		return head;
+	}
+
+	void quickSort(ListNode* head, ListNode* tail) {
+		if (head == tail || head->next == nullptr) {
+			return;
+		}
+
+		ListNode* mid = partition(head, tail);
+
+		quickSort(head, mid);
+		quickSort(mid->next, tail);
+	}
+
+	ListNode* partition(ListNode* head, ListNode * tail) {
+		int pivot = head->val;
+		ListNode* s = head;
+		ListNode* cur = head->next;
+		while (cur != nullptr && cur != tail)
+		{
+			if (cur->val < pivot) {
+				s = s->next;
+				swap(s, cur);
+			}
+			cur = cur->next;
+		}
+		swap(s, head);
+		return s;
+	}
+
+	void swap(ListNode* a, ListNode* b) {
+		int temp = a->val;
+		a->val = b->val;
+		b->val = temp;
+	}
+};
+
 
 int main()
 {
@@ -180,7 +186,7 @@ int main()
         travelList(&root);
         cout << endl;
         ListNode* res;
-        res = SortList(&root);
+        res = Solution().sortList(&root);
         travelList(res);
         cout << endl;
     }

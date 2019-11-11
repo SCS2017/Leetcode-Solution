@@ -22,15 +22,16 @@ trie.search("app");     // 返回 true
 
 using namespace std;
 
+// 其实字典树就是一个26叉树
 class TrieNode{
 public:
     //记录字符是否存在
     bool have;
-    //保存结点出现的字符
-    TrieNode* wordDict[26];
+    //保存结点出现的字符，26个指针，也就是26个子节点
+    TrieNode* child[26];
     TrieNode(){
         for(int i = 0; i < 26; ++i){
-            wordDict[i] = 0;
+            child[i] = 0;
         }
         have = false;
     }
@@ -43,27 +44,28 @@ public:
     }
     
     /** Inserts a word into the trie. */
+    // 从根节点开始查找，如果不存在就新建一个结点
     void insert(string word) {
         TrieNode* now = root;
-        for(int i = 0; i < word.length(); ++i){
-            int c = word[i] - 'a';
-            if(now->wordDict[c] == 0){
-                now->wordDict[c] = new TrieNode();
+        for(auto ch: word){
+            int c = ch - 'a';
+            if(now->child[c] == 0){
+                now->child[c] = new TrieNode();
             }
-            now = now->wordDict[c];
+            now = now->child[c];
         }
         now->have = true;
     }
-    
+    // 同样，是每层查找
     /** Returns if the word is in the trie. */
     bool search(string word) {
         TrieNode* now = root;
-        for(int i = 0; i < word.length(); ++i){
-            int c = word[i] - 'a';
-            if(now->wordDict[c] == 0){
+        for(auto ch: word){
+            int c = ch - 'a';
+            if(now->child[c] == 0){
                 return false;
             }
-            now = now->wordDict[c];
+            now = now->child[c];
         }
         return now && now->have;
     }
@@ -71,12 +73,12 @@ public:
     /** Returns if there is any word in the trie that starts with the given prefix. */
     bool startsWith(string prefix) {
         TrieNode* now = root;
-        for(int i = 0; i < prefix.length(); ++i){
-            int c = prefix[i] - 'a';
-            if(now->wordDict[c] == 0){
+        for(auto ch: prefix){
+            int c = ch - 'a';
+            if(now->child[c] == 0){
                 return false;
             }
-            now = now->wordDict[c];
+            now = now->child[c];
         }
         return now;
     }

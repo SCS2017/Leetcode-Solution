@@ -52,6 +52,44 @@ private:
     }
 };
 
+class Solution1 {
+public:
+    int getHeight(TreeNode *root){
+        int height = 1;
+        while(root->left != NULL)
+        { 
+            height++; 
+            root = root->left;}
+        return height;
+    }
+  
+    int countNodes(TreeNode* root) {
+        if(root == NULL) 
+            return 0;
+        int height = getHeight(root);
+        
+        int leafCnt = 0;
+        int level = height - 2;
+        TreeNode *cur = root;
+        while(level >= 0){
+            TreeNode *temp = cur->left;
+            for(int i = 0; i < level; ++i)
+                temp = temp->right;
+            if(temp){
+                leafCnt +=1 << level;
+                cur = cur->right;
+            } 
+            else
+                cur = cur->left;
+            
+            level--;
+        }
+        if(cur)
+            leafCnt++;
+        return (1 << height - 1) - 1 + leafCnt;
+    }
+};
+
 int main()
 {
     return 0;

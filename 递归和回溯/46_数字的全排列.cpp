@@ -114,9 +114,7 @@ public:
     }
     void help(vector<int>& nums, int start){
         if (start == nums.size()){
-            vector<int> tmp(nums.size());
-            copy(nums.begin(), nums.end(), tmp.begin());
-            res.push_back(tmp);
+            res.push_back(nums);
             return;
         }
  
@@ -128,6 +126,22 @@ public:
     }
 private:
     vector<vector<int> > res;
+};
+
+// 使用STL中的next_permutation函数，但是必须先对数组排序，否则结果不对
+class Solution3 {
+public:
+    vector<vector<int>> permute(vector<int>& nums) {
+        vector<vector<int>> res;
+        if(nums.empty())
+            return res;
+        sort(nums.begin(), nums.end());
+        res.push_back(nums);
+        while(next_permutation(nums.begin(), nums.end())){
+            res.push_back(nums);
+        }
+        return res;
+    }
 };
 
 int main()

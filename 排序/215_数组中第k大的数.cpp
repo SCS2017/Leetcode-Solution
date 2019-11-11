@@ -66,6 +66,51 @@ public:
     }
 };
 
+class Solution3 {
+public:
+    int findKthLargest(vector<int>& nums, int k) {
+        int left = 0, right = nums.size() - 1;
+        while(true){
+            int pos = Partition(nums, left, right);
+            if(pos == k-1)
+                return nums[pos];
+            else if(pos < k-1)
+                left = pos + 1;
+            else
+                right = pos - 1;
+        }
+    }
+private:
+    int Partition(vector<int>& nums, int left, int right){
+        int pivot = nums[left];
+        int low = left + 1, high = right;
+        while(low <= high){
+            if(nums[low] < pivot && nums[high] > pivot)
+                swap(nums[low++], nums[high--]);
+            if(nums[low] >= pivot)
+                ++low;
+            if(nums[high] <= pivot)
+                --high;
+        }
+        swap(nums[left], nums[high]);
+        return high;
+    }
+    int partition1(vector<int>& nums, int left, int right){
+        int pivot = nums[left];
+        int low = left+1, high = right;
+        while(low <= high){
+            while(low <= high && nums[low] >= pivot)
+                ++low;
+            while(low <= high && nums[high] <= pivot)
+                --high;
+            if(low < high)
+                swap(nums[low], nums[high]);
+        }
+        swap(nums[left], nums[high]);
+        return high;
+    }
+};
+
 int main()
 {
     int arr[] = {1, 2, 4, 6, 5, 3};
